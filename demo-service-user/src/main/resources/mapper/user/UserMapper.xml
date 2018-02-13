@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyy.springcloud.serviceuser.dao.UserDAO">
+
+    <select id="query" parameterType="com.zyy.springcloud.api.model.entity.user.User"
+            resultType="com.zyy.springcloud.api.model.entity.user.User">
+        select
+        id, gmt_created gmtCreated, gmt_modified gmtModified, creator, modifier, version, status,
+        account, mobile, name, password, reg_time regTime, last_login_time lastLoginTime
+        from micro_user.user
+        <where>
+            <if test="id != null">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="virtualCreateTime != null">
+                and gmt_modified &gt;= #{virtualCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="account != null">
+                and account = #{account,jdbcType=VARCHAR}
+            </if>
+            <if test="mobile != null">
+                and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="name != null">
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="password != null">
+                and password = #{password,jdbcType=VARCHAR}
+            </if>
+            <if test="regTime != null">
+                and reg_time = #{regTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastLoginTime != null">
+                and last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null">
+                and status = #{status,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" keyColumn="id" keyProperty="id"
+            parameterType="com.zyy.springcloud.api.model.entity.user.User" useGeneratedKeys="true">
+        insert into micro_user.user (
+            gmt_created,
+            gmt_modified,
+            creator,
+            modifier,
+            version,
+            account,
+            mobile,
+            name,
+            password,
+            reg_time,
+            last_login_time,
+            status
+            )
+        values
+            (now(), now(), 0, 0, 0,
+            #{account,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+            #{password,jdbcType=VARCHAR},now(), #{lastLoginTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}
+            )
+    </insert>
+</mapper>

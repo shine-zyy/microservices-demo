@@ -1,13 +1,6 @@
 # microservices-demo
 springcloud  微服务demo
 
-echo "# microservices-demo" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git remote add origin https://github.com/shine-zyy/microservices-demo.git
-git push -u origin master
-
 #服务列表
 
 |     	| 服务名称           	| 端口    	| 说明     	  |

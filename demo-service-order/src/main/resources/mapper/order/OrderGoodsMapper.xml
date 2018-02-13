@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyy.springcloud.serviceorder.dao.OrderGoodsDAO">
+    <select id="query" parameterType="com.zyy.springcloud.api.model.entity.order.OrderGoods"
+            resultType="com.zyy.springcloud.api.model.entity.order.OrderGoods">
+        select
+          id, gmt_created gmtCreated, gmt_modified gmtModified, creator, modifier, version,
+          order_id orderId, goods_id goodsId, goods_name goodsName, quantity, price, amount
+        from micro_order.order_goods
+        <where>
+            <if test="orderId != null">
+                and order_id = #{orderId,jdbcType=BIGINT}
+            </if>
+            <if test="goodsId != null">
+                and goods_id = #{goodsId,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" keyColumn="id" keyProperty="id"
+            parameterType="java.util.List" useGeneratedKeys="true">
+        insert into micro_order.order_goods (
+            gmt_created,gmt_modified,creator,modifier,version,
+            order_id,
+            goods_id,
+            goods_name,
+            quantity,
+            price,
+            amount
+        ) values
+          <foreach collection="list" item="model" index="index" separator="," close=";" >
+            (
+            now(), now(), 0, 0, 0,
+            #{model.orderId,jdbcType=BIGINT},
+            #{model.goodsId,jdbcType=BIGINT},
+            #{model.goodsName,jdbcType=VARCHAR},
+            #{model.quantity,jdbcType=BIGINT},
+            #{model.price,jdbcType=DECIMAL},
+            #{model.amount,jdbcType=VARCHAR}
+            )
+          </foreach>
+    </insert>
+</mapper>
