@@ -20,7 +20,7 @@ public class OrderGoods extends BaseEntity {
     /**
      * 商品ID
      */
-    private Integer goodsId;
+    private Long goodsId;
     /**
      * 商品名称
      */
@@ -47,11 +47,11 @@ public class OrderGoods extends BaseEntity {
         this.orderId = orderId;
     }
 
-    public Integer getGoodsId() {
+    public Long getGoodsId() {
         return goodsId;
     }
 
-    public void setGoodsId(Integer goodsId) {
+    public void setGoodsId(Long goodsId) {
         this.goodsId = goodsId;
     }
 

@@ -7,30 +7,34 @@ import com.zyy.springcloud.api.model.enums.ResultCode;
 import java.io.Serializable;
 
 public class Result implements Serializable {
-	private static final long serialVersionUID = -1223580564248951536L;
-	
-	private String code;
-	private String msg;
+    private static final long serialVersionUID = -1223580564248951536L;
 
-	public Result() {
-		super();
-	}
+    private String code;
+    private String msg;
 
-	public Result(String code, String msg) {
-		this.code = code;
-		this.msg = msg;
-	}
+    public Result() {
+        super();
+    }
 
-	public static Result success() {
-	    return new Result(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc());
+    public Result(String code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public static Result success() {
+        return new Result(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getDesc());
     }
 
     public static Result fail(ResultCode resultCode) {
         return new Result(resultCode.getCode(), resultCode.getDesc());
     }
 
+    public static Result fail(String code, String msg) {
+        return new Result(code, msg);
+    }
+
     public void setSuccess(Boolean isSuccess) {
-	    if(isSuccess) {
+        if (isSuccess) {
             this.code = ResultCode.SUCCESS.getCode();
             this.msg = ResultCode.SUCCESS.getDesc();
         } else {
@@ -38,22 +42,27 @@ public class Result implements Serializable {
             this.msg = ResultCode.ERROR.getDesc();
         }
     }
-	@JsonIgnore
-	public String getCode() {
-		return code;
-	}
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public boolean isSuccess() {
+        return this.code.equals(ResultCode.SUCCESS.getCode());
+    }
 
-	@JsonIgnore
-	public String getMsg() {
-		return msg;
-	}
+    @JsonIgnore
+    public String getCode() {
+        return code;
+    }
 
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @JsonIgnore
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 
 }

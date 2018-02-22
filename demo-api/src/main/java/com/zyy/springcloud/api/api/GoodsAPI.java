@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 商品服务API
@@ -28,5 +29,12 @@ public interface GoodsAPI {
     })
     @RequestMapping(value = "/goods/{id}", method = RequestMethod.GET, produces = {"application/json"})
     BaseResponse<GoodsResult> queryById(@PathVariable("id") Long id);
+
+    @ApiOperation(value = "查询商品列表详情", notes = "查询商品列表详情", protocols = "http")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "goodsIdList", value = "goodsIdList", required = true, paramType = "query", dataType = "List")
+    })
+    @RequestMapping(value = "/goods", method = RequestMethod.GET, produces = {"application/json"})
+    BaseResponse<GoodsListResult> queryList(@RequestParam("goodsIdList") ArrayList<Long> goodsIdList);
 
 }

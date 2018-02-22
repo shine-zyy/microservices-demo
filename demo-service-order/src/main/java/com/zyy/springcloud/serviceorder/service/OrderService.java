@@ -1,6 +1,8 @@
 package com.zyy.springcloud.serviceorder.service;
 
+import com.zyy.springcloud.api.exception.BizException;
 import com.zyy.springcloud.api.model.dto.request.order.OrderCreateDTO;
+import com.zyy.springcloud.api.model.dto.request.order.OrderGoodsDTO;
 import com.zyy.springcloud.api.model.dto.request.order.OrderQueryDTO;
 import com.zyy.springcloud.api.model.dto.request.order.OrderUpdateDTO;
 import com.zyy.springcloud.api.model.dto.response.Result;
@@ -31,19 +33,23 @@ public class OrderService {
     @Autowired
     private OrderDAO orderDAO;
     @Autowired
-    private OrderGoodsDAO orderGoodsDAO;
+    private OrderGoodsService orderGoodsService;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Result create(OrderCreateDTO orderCreateDTO) {
         Order orderPO = new Order();
+        if (CollectionUtils.isEmpty(orderCreateDTO.getGoodsList())) {
+            return Result.fail(ResultCode.ORDER_GOODS_IS_NULL);
+        }
         BeanUtils.copyProperties(orderCreateDTO, orderPO);
         //保存订单
         Boolean isSuccess = orderDAO.insert(orderPO);
-        List<OrderGoods> orderGoodsList = new ArrayList<>();
-        BeanUtils.copyProperties(orderCreateDTO.getGoodsList(), orderGoodsList);
+        if (!isSuccess) {
+            return Result.fail(ResultCode.ORDER_CREATE_FAIL);
+        }
         //保存订单商品
-        isSuccess = orderGoodsDAO.insert(orderGoodsList);
-        return isSuccess ? Result.success() : Result.fail(ResultCode.ORDER_CREATE_FAIL);
+        orderGoodsService.save(orderPO.getId(), orderCreateDTO.getGoodsList());
+        return Result.success();
     }
 
     public Result update(OrderUpdateDTO orderUpdateDTO) {
@@ -56,16 +62,16 @@ public class OrderService {
         Order order = new Order();
         order.setId(orderId);
         List<Order> orderList = orderDAO.query(order);
-        if(CollectionUtils.isEmpty(orderList)) {
-             orderResult.setCode(ResultCode.ORDER_NOT_EXIST.getCode());
-             orderResult.setMsg(ResultCode.ORDER_NOT_EXIST.getDesc());
-             return orderResult;
+        if (CollectionUtils.isEmpty(orderList)) {
+            orderResult.setCode(ResultCode.ORDER_NOT_EXIST.getCode());
+            orderResult.setMsg(ResultCode.ORDER_NOT_EXIST.getDesc());
+            return orderResult;
         }
         BeanUtils.copyProperties(orderList.get(0), orderResult);
         //查询订单商品
         OrderGoods orderGoods = new OrderGoods();
         orderGoods.setOrderId(orderId);
-        List<OrderGoods> orderGoodsList = orderGoodsDAO.query(orderGoods);
+        List<OrderGoods> orderGoodsList = orderGoodsService.query(orderGoods);
         orderResult.setOrderGoodsList(orderGoodsList);
         orderResult.setSuccess(true);
         return orderResult;
@@ -78,20 +84,20 @@ public class OrderService {
         Order order = new Order();
         BeanUtils.copyProperties(orderQueryDTO, order);
         List<Order> orderList = orderDAO.query(order);
-        if(CollectionUtils.isEmpty(orderList)) {
+        if (CollectionUtils.isEmpty(orderList)) {
             orderListResult.setCode(ResultCode.ORDER_NOT_EXIST.getCode());
             orderListResult.setMsg(ResultCode.ORDER_NOT_EXIST.getDesc());
             return orderListResult;
         }
 
         List<OrderResult> orderResultList = new ArrayList<>();
-        for(Order orderDB : orderList) {
+        for (Order orderDB : orderList) {
             OrderResult orderResult = new OrderResult();
             BeanUtils.copyProperties(orderDB, orderResult);
             //查询订单商品
             OrderGoods orderGoods = new OrderGoods();
             orderGoods.setOrderId(orderDB.getId());
-            List<OrderGoods> orderGoodsList = orderGoodsDAO.query(orderGoods);
+            List<OrderGoods> orderGoodsList = orderGoodsService.query(orderGoods);
             orderResult.setOrderGoodsList(orderGoodsList);
             orderResultList.add(orderResult);
         }

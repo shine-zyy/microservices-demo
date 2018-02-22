@@ -12,6 +12,7 @@ import com.zyy.springcloud.api.api.OrderAPI;
 import com.zyy.springcloud.serviceorder.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class OrderController extends AbstractController implements OrderAPI {
     private OrderService orderService;
 
     @Override
-    public BaseResponse<Result> create(OrderCreateDTO orderCreateDTO) {
+    public BaseResponse<Result> create(@RequestBody OrderCreateDTO orderCreateDTO) {
         Result result = orderService.create(orderCreateDTO);
         return buildJson(result.getCode(), result.getMsg(), null);
     }

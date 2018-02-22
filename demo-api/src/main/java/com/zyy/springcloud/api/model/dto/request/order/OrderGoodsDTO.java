@@ -15,7 +15,7 @@ public class OrderGoodsDTO implements Serializable {
     /**
      * 商品ID
      */
-    private Long id;
+    private Long goodsId;
     /**
      * 商品名称
      */
@@ -30,12 +30,12 @@ public class OrderGoodsDTO implements Serializable {
     private Integer quantity;
 
 
-    public Long getId() {
-        return id;
+    public Long getGoodsId() {
+        return goodsId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setGoodsId(Long goodsId) {
+        this.goodsId = goodsId;
     }
 
     public String getName() {

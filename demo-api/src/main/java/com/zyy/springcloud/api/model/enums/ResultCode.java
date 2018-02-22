@@ -15,7 +15,9 @@ public enum ResultCode {
 
     // order-service code起始码 040000, 功能起始码040101
     ORDER_NOT_EXIST("订单不存在","040101"),
-    ORDER_CREATE_FAIL("创建订单失败","040201");
+    ORDER_CREATE_FAIL("创建订单失败","040201"),
+    ORDER_GOODS_IS_NULL("创建订单失败,请选择商品","040202"),
+    ORDER_GOODS_INSERT_ERROR("创建订单失败,保存订单商品失败","040203");
 
     private String desc;
     private String code;
