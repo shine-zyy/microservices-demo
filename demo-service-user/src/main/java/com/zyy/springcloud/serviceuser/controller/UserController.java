@@ -8,7 +8,10 @@ import com.zyy.springcloud.api.model.dto.response.BaseResponse;
 import com.zyy.springcloud.api.model.dto.response.Result;
 import com.zyy.springcloud.api.model.dto.response.user.UserListResult;
 import com.zyy.springcloud.api.model.dto.response.user.UserResult;
+import com.zyy.springcloud.api.model.entity.user.User;
+import com.zyy.springcloud.common.cache.RUserCache;
 import com.zyy.springcloud.serviceuser.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,10 +27,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController extends AbstractController implements UserAPI {
     @Autowired
     private UserService userService;
+    @Autowired
+    private RUserCache rUserCache;
 
     @Override
     public BaseResponse<UserResult> queryById(@PathVariable Long uid) {
-        UserResult result = userService.queryById(uid);
+        User user = (User) rUserCache.getUserInfo();
+        UserResult result = new UserResult();
+        if (null == user) {
+            result = userService.queryById(uid);
+            if(result.isSuccess()) {
+                user = new User();
+                BeanUtils.copyProperties(result, user);
+                rUserCache.setUserInfo(user);
+            }
+        } else {
+            BeanUtils.copyProperties(user, result);
+            result.setSuccess(true);
+        }
         return buildJson(result.getCode(), result.getMsg(), result);
     }
 

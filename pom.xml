@@ -27,6 +27,9 @@
         <module>demo-service-order</module>
         <module>demo-service-user</module>
         <module>demo-service-goods</module>
+        <module>demo-cache-core</module>
+        <module>demo-common</module>
+        <module>demo-cache-autoconfig</module>
     </modules>
 
     <properties>
