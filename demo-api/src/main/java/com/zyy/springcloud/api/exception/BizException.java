@@ -9,7 +9,7 @@ import com.zyy.springcloud.api.model.enums.ResultCode;
 public class BizException extends BaseRuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public BizException(String code, String message) {
+    public BizException(Integer code, String message) {
         super(code, message);
     }
 
@@ -17,7 +17,4 @@ public class BizException extends BaseRuntimeException {
         super(resultCode.getCode(), resultCode.getDesc());
     }
 
-    public BizException(String message) {
-        super(message);
-    }
 }

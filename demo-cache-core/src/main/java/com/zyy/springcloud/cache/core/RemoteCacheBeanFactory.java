@@ -15,6 +15,7 @@ public class RemoteCacheBeanFactory extends AbstractCacheBeanFactory {
 
     @Resource(name = "redisTemplate")
     protected RedisOperations<String, Object> redisOper;
+
     @Resource(name = "redisTransactionTemplate")
     protected RedisOperations<String, Object> redisTxnOper;
 

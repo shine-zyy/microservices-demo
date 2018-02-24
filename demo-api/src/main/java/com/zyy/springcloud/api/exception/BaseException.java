@@ -5,11 +5,11 @@ public class BaseException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-    private String code;
+    private Integer code;
 
     private String message;
 
-    public BaseException(String code, String message) {
+    public BaseException(Integer code, String message) {
         super();
         this.code = code;
         this.message = message;
@@ -20,11 +20,11 @@ public class BaseException extends Exception {
         this.message = message;
     }
 
-    public String getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 

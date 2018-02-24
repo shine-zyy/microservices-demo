@@ -15,7 +15,6 @@
     </parent>
     <modules>
         <module>demo-api</module>
-        <module>demo-feign-consumer</module>
         <module>demo-eureka-server</module>
         <module>demo-api-gateway</module>
         <module>demo-config-server</module>

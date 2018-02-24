@@ -60,6 +60,6 @@ public class UserController extends AbstractController implements UserAPI {
     @Override
     public BaseResponse add(@RequestBody UserAddDTO addDTO) {
         Result result = userService.add(addDTO);
-        return buildJson(result.getCode(), result.getMsg(), null);
+        return buildJson(result.getCode(), result.getMsg());
     }
 }

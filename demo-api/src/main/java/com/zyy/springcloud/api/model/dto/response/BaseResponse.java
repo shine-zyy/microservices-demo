@@ -2,6 +2,7 @@ package com.zyy.springcloud.api.model.dto.response;
 
 
 import com.zyy.springcloud.api.model.enums.ResultCode;
+import io.swagger.models.auth.In;
 
 import java.io.Serializable;
 
@@ -12,20 +13,20 @@ public class BaseResponse<T> implements Serializable {
     private boolean success;
     private String msg;
     private T data;
-    private String code;
+    private Integer code;
 
     public BaseResponse() {
         super();
     }
 
-    private BaseResponse(String code, String msg, T data) {
+    private BaseResponse(Integer code, String msg, T data) {
         this.code = code;
         this.msg  = msg;
         this.data = data;
     }
 
     private BaseResponse(T data) {
-        this.code = ResultCode.SUCCESS.name();
+        this.code = ResultCode.SUCCESS.getCode();
         this.msg = ResultCode.SUCCESS.getDesc();
         this.data = data;
     }
@@ -36,7 +37,7 @@ public class BaseResponse<T> implements Serializable {
      * @param data
      * @return
      */
-    public static BaseResponse fail(String code, String msg, Object data) {
+    public static BaseResponse fail(Integer code, String msg, Object data) {
         return new BaseResponse(code, msg, data);
     }
 
@@ -46,7 +47,7 @@ public class BaseResponse<T> implements Serializable {
      * @param msg
      * @return
      */
-    public static BaseResponse fail(String code, String msg) {
+    public static BaseResponse fail(Integer code, String msg) {
         return BaseResponse.fail(code, msg, null);
     }
     /**
@@ -54,14 +55,14 @@ public class BaseResponse<T> implements Serializable {
      * @return
      */
     public static BaseResponse systemError() {
-        return BaseResponse.fail(ResultCode.ERROR.name(), ResultCode.ERROR.getDesc(), null);
+        return BaseResponse.fail(ResultCode.ERROR.getCode(), ResultCode.ERROR.getDesc(), null);
     }
 
-    public String getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 

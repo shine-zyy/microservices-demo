@@ -5,11 +5,11 @@ public class BaseRuntimeException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    private String code;
+    private Integer code;
 
     private String message;
 
-    public BaseRuntimeException(String code, String message) {
+    public BaseRuntimeException(Integer code, String message) {
         super();
         this.code = code;
         this.message = message;
@@ -20,11 +20,11 @@ public class BaseRuntimeException extends RuntimeException {
         this.message = message;
     }
 
-    public String getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 

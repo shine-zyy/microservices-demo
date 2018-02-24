@@ -9,14 +9,14 @@ import java.io.Serializable;
 public class Result implements Serializable {
     private static final long serialVersionUID = -1223580564248951536L;
 
-    private String code;
+    private Integer code;
     private String msg;
 
     public Result() {
         super();
     }
 
-    public Result(String code, String msg) {
+    public Result(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
@@ -29,7 +29,7 @@ public class Result implements Serializable {
         return new Result(resultCode.getCode(), resultCode.getDesc());
     }
 
-    public static Result fail(String code, String msg) {
+    public static Result fail(Integer code, String msg) {
         return new Result(code, msg);
     }
 
@@ -43,16 +43,17 @@ public class Result implements Serializable {
         }
     }
 
+    @JsonIgnore
     public boolean isSuccess() {
         return this.code.equals(ResultCode.SUCCESS.getCode());
     }
 
     @JsonIgnore
-    public String getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 
